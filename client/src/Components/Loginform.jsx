@@ -1,15 +1,25 @@
 import React from 'react'
 import '../LoginCss/Login.css'
 import playstore from '../Images/playstore.png'
+// import { useState } from 'react'
+import Textbox from './Textbox'
 const Loginform = () => {
+
   return (
     <div className='loginMain'>
        <div className='form'>
       <form className='form-content'>
          <h1>InstaGram</h1>
-         <input type='text' placeholder='Phone number, username, or email'/>
-         <input type='password' placeholder='Password' style={{margin:'4px'}}/>
-         <input type='button' className='loginButton' value='log in' />
+
+         <Textbox placeholder="username email or phone " type="text" />
+         <Textbox placeholder="password" type="password" />
+         
+         
+
+         <input type='button' 
+         className='loginButton' 
+         value='log in' />
+         
          <div style={{display:"flex"}}>
             <hr className='hor'/>
              <p>OR</p>
