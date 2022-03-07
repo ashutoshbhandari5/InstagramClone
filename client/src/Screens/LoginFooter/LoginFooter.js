@@ -1,5 +1,5 @@
 import React from 'react'
-import '../LoginCss/Login.css'
+import '../../LoginCss/Login.scss'
 const LoginFooter = () => {
   return (
      <>
