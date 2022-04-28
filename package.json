@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon backend/server",
+    "client": "npm start --prefix client",
     "data:import": "node backend/seeder"
   },
   "repository": {
@@ -19,7 +20,6 @@
   },
   "homepage": "https://github.com/ashutoshbhandari5/InstagramClone#readme",
   "dependencies": {
-    "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "concurrently": "^7.0.0",
     "dotenv": "^16.0.0",
