@@ -1,0 +1,6 @@
+@mixin flexCenter ($height){
+    height: $height;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,9 +1,11 @@
+import LoginPage from "./pages/LoginPage/loginPage";
+import {Routes, Route} from 'react-router-dom'
 
 function App() {
   return (
-    <div className="uppercase">
-      hello insta
-    </div>
+      <Routes>
+      <Route path="/" element={<LoginPage/>}/>
+     </Routes>
   );
 }
 
