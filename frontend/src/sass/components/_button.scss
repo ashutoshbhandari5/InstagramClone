@@ -1,0 +1,32 @@
+.google-login {
+  margin: 13px 50px 6px 50px;
+  cursor: pointer;
+  @include flexCenter();
+
+  & > img {
+    width: 1rem;
+    margin-right: 10px;
+  }
+
+  & > p {
+    font-size: 14px;
+    color: $medium-black;
+  }
+}
+
+.button {
+  color: $white-color;
+  margin: 13px 40px 6px 40px;
+
+  & > button {
+    background-color: $color-blue;
+    color: $white-color;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    text-align: center;
+    padding: 6px;
+    border-radius: 3px;
+  }
+}

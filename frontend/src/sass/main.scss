@@ -1,12 +1,18 @@
-@import './abstracts/functions';
-@import './abstracts/mixins';
-@import './abstracts/variables';
+@import "./abstracts/functions";
+@import "./abstracts/mixins";
+@import "./abstracts/variables";
 
-@import './base/base';
-@import './base/typography';
-@import './base/utilities';
-@import './base/animations';
+@import "./base/base";
+@import "./base/typography";
+@import "./base/utilities";
+@import "./base/animations";
 
-@import './components/imageShowCase.scss';
+@import "./components/imageShowCase";
+@import "./components/loginCard";
+@import "./components/input";
+@import "./components/button";
+@import "./components/borderLine";
+@import "./components/tags";
+@import "./components/footer";
 
-@import './pages/loginPage';
+@import "./pages/loginPage";
