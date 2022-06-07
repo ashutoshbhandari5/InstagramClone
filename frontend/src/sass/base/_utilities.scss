@@ -1,0 +1,66 @@
+.md-lg {
+  margin-top: 2rem !important;
+}
+.pt-lg {
+  padding-top: 1rem !important;
+}
+.ml-lg {
+  margin-left: 4px;
+}
+.mtb-lg {
+  margin: 1rem 0;
+}
+.font-thin {
+  font-weight: 300 !important;
+}
+.font-medium {
+  font-weight: 400 !important;
+}
+.font-bold {
+  font-weight: 600 !important;
+}
+.test-width {
+  width: 450px;
+}
+.full-with {
+  width: 100%;
+}
+
+.uppercase {
+  text-transform: uppercase !important;
+}
+.blue-color {
+  color: $color-blue !important;
+}
+.flex-element {
+  height: 100%;
+  width: 100%;
+  @include flexCenter();
+}
+.text-size-small {
+  font-size: 12px;
+}
+.text-size-medium {
+  font-size: 14px;
+}
+.text-size-large {
+  font-size: 16px;
+}
+.text-center {
+  text-align: center;
+}
+.color-dark {
+  color: $dark-color;
+}
+.color-white {
+  color: $white-color;
+}
+.color-blue {
+  color: $color-blue;
+}
+.color-link {
+  color: $link-color;
+}
+.color-dark-gray {
+  color: $dark-gray-color;
+}

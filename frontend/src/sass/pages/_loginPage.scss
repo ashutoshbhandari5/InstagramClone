@@ -1,0 +1,17 @@
+.login-page {
+  & > main {
+    flex-direction: column;
+  }
+  .article-section {
+    width: 100%;
+    margin: 32px 127px 0 127px;
+    padding-bottom: 22px;
+
+    @include flexCenter() {
+      align-items: center;
+    }
+  }
+  &-footer {
+    width: 30px;
+  }
+}

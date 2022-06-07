@@ -1,0 +1,16 @@
+.tags {
+  max-width: 100%;
+  div {
+    display: flex;
+    justify-content: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+  }
+  h6 {
+    font-weight: 500;
+    font-size: 13px;
+    padding: 0.3rem;
+    font-size: 12px;
+    color: #8e8e8e;
+  }
+}

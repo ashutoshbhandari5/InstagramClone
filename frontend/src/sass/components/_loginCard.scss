@@ -1,0 +1,54 @@
+.login-card-container {
+  height: 100%;
+  width: 350px;
+  @include mainBorder();
+  margin-top: 0.6rem;
+  background-color: $white-color;
+  @include flexCenter() {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .heading-logo {
+    &-image {
+      margin-top: 52px;
+      width: 10rem;
+    }
+  }
+
+  .login-form {
+    margin-top: 1.4rem;
+    width: 100%;
+
+    .divider {
+      @include flexCenter();
+      margin: 10px 40px 18px;
+
+      & > span {
+        color: $dark-gray-color;
+        font-size: 12px;
+        margin: 0 15px;
+      }
+    }
+
+    .forget-password {
+      margin: 10px 60px 18px;
+      text-align: center;
+    }
+  }
+}
+
+.sign-up {
+  @include mainBorder();
+  background-color: $white-color;
+  margin-top: 10px;
+  padding: 1.1rem 0;
+
+  & > div {
+    @include flexCenter();
+  }
+}
+.download-link {
+  @include flexCenter();
+  gap: 2%;
+}
