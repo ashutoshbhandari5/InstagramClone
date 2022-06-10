@@ -1,73 +1,82 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: [true, "Please enter your name"],
+      type: String,
+      required: [true, "Please enter your name"],
     },
-    userName:{
-        type: String,
-        unique: true,
-        required: [true, "Please enter your username"]
+    username: {
+      type: String,
+      unique: true,
+      required: [true, "Please enter your username"],
     },
     googleEmail: {
-        type: String,
-        unique: [true, "This email address is already used"],
-        lowercase: true,
-        validate: [validator.isEmail, "Please provide valid email address"]
+      type: String,
+      unique: [true, "This email address is already used"],
+      sparse: true,
+      lowercase: true,
+      validate: [validator.isEmail, "Please provide valid email address"],
     },
-    photo:String,
+    photo: String,
     password: {
-        type: String,
-        required: [true, "Please enter your password"],
-        minlength: 8,
-        select: false
+      type: String,
+      required: [true, "Please enter your password"],
+      minlength: 8,
+      select: false,
     },
     confirmPassword: {
-        type:String,
-        required: [true, "Please confirm your password"],
-        minlength: 8,
-        validate: {
-            validator: function(el) {
-                return el === this.password
-            },
-            message: "Password does not match"
-        }
+      type: String,
+      required: [true, "Please confirm your password"],
+      minlength: 8,
+      validate: {
+        validator: function (el) {
+          return el === this.password;
+        },
+        message: "Password does not match",
+      },
     },
     passwordChangedAt: Date,
-},
-{
-    toJSON:{virtuals:true},
-    toObject:{virtuals:true}
-}
-)
+    refreshToken: [String],
+  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
 
-userSchema.pre('save', async function(next) {
-    //do not run the middleware if the password in not changed
-    if(!this.isModified('password')) return next();
+userSchema.pre("save", async function (next) {
+  //do not run the middleware if the password in not changed
+  if (!this.isModified("password")) return next();
 
-    //store secure password in database
-    this.password = await bcrypt.hash(this.password, 12);
+  //store secure password in database
+  this.password = await bcrypt.hash(this.password, 12);
 
-    //remove the confirm password filed as password is already stored in db after hashed
-    this.confirmPassword = undefined;
+  //remove the confirm password filed as password is already stored in db after hashed
+  this.confirmPassword = undefined;
 
-    next();
-})
+  next();
+});
 
-userSchema.methods.isCorrectPassword = async function(candidatePassword, userPassword) {
-    return await bcrypt.compare(candidatePassword, userPassword);
-}
+userSchema.methods.isCorrectPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
 
-userSchema.methods.changedPasswordAfter = function(jwtTimeStamp) {
-    if(this.passwordChangedAt){
-        const passwordChangedTimeStamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
-        return jwtTimeStamp < passwordChangedTimeStamp;
-    }
-    return false;
-}
+userSchema.methods.changedPasswordAfter = function (jwtTimeStamp) {
+  if (this.passwordChangedAt) {
+    const passwordChangedTimeStamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+    return jwtTimeStamp < passwordChangedTimeStamp;
+  }
+  return false;
+};
 
 const User = mongoose.model("User", userSchema);
 

@@ -19,4 +19,7 @@
       border-color: $dark-gray-color;
     }
   }
+  & > input::placeholder {
+    font-size: 12px;
+  }
 }

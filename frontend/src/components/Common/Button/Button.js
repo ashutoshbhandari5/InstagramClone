@@ -1,10 +1,10 @@
 import React from "react";
 import googelLogo from "../../../assets/google.png";
 
-const Button = ({ handleClick, disabled, type, text }) => {
+const Button = ({ disabled, type, text }) => {
   if (type === "googleLogin") {
     return (
-      <div className="google-login" onClick={handleClick}>
+      <div className="google-login">
         <img src={googelLogo} alt="Google Logo" />
         <p className="font-medium">Log in with Google</p>
       </div>
@@ -12,9 +12,7 @@ const Button = ({ handleClick, disabled, type, text }) => {
   }
   return (
     <div className="button">
-      <button disabled={disabled} onClick={handleClick}>
-        {text}
-      </button>
+      <button disabled={disabled}>{text}</button>
     </div>
   );
 };
