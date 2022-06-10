@@ -1,23 +1,21 @@
 import React, { useState } from "react";
 
-const Input = ({ type, placeholder, onInputChange }) => {
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleInputChange = (value) => {
-    onInputChange(value);
-    value !== "" ? setShowPassword(true) : setShowPassword(false);
-  };
+const Input = ({ type, placeholder, name, onInputChange }) => {
+  // const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="input-box">
       <input
         type={type}
         placeholder={placeholder}
-        onChangeCapture={(e) => handleInputChange(e.target.value)}
+        name={name}
+        onChange={(e) => onInputChange(e.target)}
       />
-      {type === "passoword" && showPassword && (
+      {/* todo
+      Show and hide pw  */}
+      {/* {type === "passoword" && showPassword && (
         <span className="input-toggle"> {showPassword ? "Hide" : "Show"} </span>
-      )}
+      )} */}
     </div>
   );
 };

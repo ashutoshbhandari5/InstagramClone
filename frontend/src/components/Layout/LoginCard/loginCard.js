@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import useForm from "../../../hooks/useForm";
 import Logo from "../../../assets/logo.png";
 import BorderLine from "../../Common/BorderLine/BorderLine";
 import Button from "../../Common/Button/Button";
@@ -8,22 +10,37 @@ import URL from "../../Common/URL/URL";
 import GooglePlayImg from "../../../assets/GooglePlay.png";
 import AppStoreImg from "../../../assets/AppStore.png";
 
-console.log(process.env.hello);
-
 const LoginCard = () => {
+  const { values, handleChange, disableLoginButton } = useForm();
+  const { username, password } = values;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const user = { email: username, password: password };
+  };
+
   return (
     <div>
       <div className="login-card-container">
         <div className="heading-logo">
           <img className="heading-logo-image" src={Logo} alt="Heading logo" />
         </div>
-        <form className="login-form">
+        <form className="login-form" onSubmit={handleSubmit}>
           <Input
             type={"text"}
+            name={"username"}
+            value={username}
             placeholder={"Phone number, username and email"}
+            onInputChange={handleChange}
           />
-          <Input type={"password"} placeholder={"Password"} />
-          <Button text={"Log In"} />
+          <Input
+            type={"password"}
+            name={"password"}
+            placeholder={"Password"}
+            value={password}
+            onInputChange={handleChange}
+          />
+          <Button disabled={disableLoginButton()} text={"Log In"} />
           <div className="divider">
             <BorderLine />
             <span className="uppercase">or</span>

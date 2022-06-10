@@ -29,4 +29,9 @@
     padding: 6px;
     border-radius: 3px;
   }
+
+  & > button:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
 }
