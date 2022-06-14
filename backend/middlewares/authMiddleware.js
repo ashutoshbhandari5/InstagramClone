@@ -14,8 +14,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
-  } else if (req.cookies) {
-    token = req.cookies.jwt;
   }
 
   //return error message if the token is not available
@@ -26,24 +24,25 @@ exports.protect = catchAsync(async (req, res, next) => {
   //decode the token
   const decodedToken = await promisify(jwt.verify)(
     token,
-    process.env.JWT_SECRET_KEY
+    process.env.JWT_ACCESS_SECRET_KEY
   );
+
   console.log(decodedToken);
 
   //check if the user is avilable with that particular token
-  const user = await User.findById(decodedToken.id).select("-password");
+  const user = await User.find({ username: decodedToken.username }).select(
+    "-password"
+  );
   console.log(user);
   if (!user) {
     return next(new AppError("User does not exits", 404));
   }
 
   //if password is changed after token is generated user should login again
-  const isNotValidToken = user.changedPasswordAfter(decodedToken.iat);
-  if (isNotValidToken) {
-    return next("Please login again", 401);
-  }
+  // const isNotValidToken = user.changedPasswordAfter(decodedToken.iat);
+  // if (isNotValidToken) {
+  //   return next("Please login again", 401);
+  // }
   req.user = user;
   next();
 });
-
-exports.refreshToken = catchAsync((req, res, next) => {});

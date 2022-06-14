@@ -38,8 +38,7 @@ exports.createUser = catchAsync(async (req, res, next) => {
 
   user.password = undefined;
   user.__v = undefined;
-
-  console.log(user);
+  user.refreshToken = undefined;
 
   res.cookie("jwt", refreshToken, {
     expires: new Date(Date.now() + 24 * 60 * 1000),
