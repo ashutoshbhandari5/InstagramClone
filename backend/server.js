@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db.js");
 const userRouter = require("./routes/userRoutes");
+const refreshTokenRoute = require("./routes/refreshTokenRoute");
 const cookiePraser = require("cookie-parser");
 const globalErrorHandler = require("./controller/errorController");
 const AppError = require("./utils/appError");
@@ -16,8 +17,11 @@ app.use(express.json());
 app.use(cookiePraser());
 
 connectDB();
+const d = new Date(Date.now());
+console.log(d.getTime());
 
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/refreshToken", refreshTokenRoute);
 
 app.use("*", (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl} in this server`, 404));
