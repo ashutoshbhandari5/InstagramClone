@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 
 const Input = ({ type, placeholder, name, onInputChange }) => {
   // const [showPassword, setShowPassword] = useState(false);

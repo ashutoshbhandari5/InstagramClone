@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const getUser = (userInfo) => {
+  console.log(userInfo);
   const response = axios.post("api/v1/user/signin", userInfo);
 
   if (response) {

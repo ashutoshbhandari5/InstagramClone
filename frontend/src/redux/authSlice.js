@@ -9,7 +9,8 @@ const initialState = {
   message: "",
 };
 
-const login = createAsyncThunk("auth/login", async (user, thunkApi) => {
+export const login = createAsyncThunk("auth/login", async (user, thunkApi) => {
+  console.log("Login started");
   try {
     return await httpService.getUser(user);
   } catch (error) {
@@ -44,7 +45,7 @@ export const loginSlice = createSlice({
       state.user = action.payload;
       state.isLoading = false;
       state.isSccuess = true;
-      state.error = false;
+      state.isError = false;
     });
 
     builder.addCase(login.rejected, (state, action) => {
@@ -55,3 +56,5 @@ export const loginSlice = createSlice({
     });
   },
 });
+
+export default loginSlice.reducer;

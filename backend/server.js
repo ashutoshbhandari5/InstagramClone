@@ -17,8 +17,6 @@ app.use(express.json());
 app.use(cookiePraser());
 
 connectDB();
-const d = new Date(Date.now());
-console.log(d.getTime());
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/refreshToken", refreshTokenRoute);
