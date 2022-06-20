@@ -1,6 +1,5 @@
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/userModel");
-const jwt = require("jsonwebtoken");
 const AppError = require("../utils/appError");
 const generateJwtToken = require("../utils/generateJwt");
 
@@ -57,7 +56,7 @@ exports.signIn = catchAsync(async (req, res, next) => {
   const cookies = req.cookies;
 
   if (!username || !password) {
-    return next(new AppError("Please enter your email and password", 402));
+    return next(new AppError("Please enter your username and password", 401));
   }
 
   const user = await User.findOne({ username }).select("+password");
@@ -111,6 +110,9 @@ exports.signIn = catchAsync(async (req, res, next) => {
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
   });
+
+  result.password = undefined;
+  result.refreshToken = undefined;
   res.status(200).json({
     status: "success",
     data: {
