@@ -7,7 +7,6 @@ const jwt = require("jsonwebtoken");
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
 
-  console.log(req.headers.authorization);
   //find token in headers
   if (
     req.headers.authorization &&
@@ -27,13 +26,11 @@ exports.protect = catchAsync(async (req, res, next) => {
     process.env.JWT_ACCESS_SECRET_KEY
   );
 
-  console.log(decodedToken);
-
   //check if the user is avilable with that particular token
   const user = await User.find({ username: decodedToken.username }).select(
     "-password"
   );
-  console.log(user);
+
   if (!user) {
     return next(new AppError("User does not exits", 404));
   }

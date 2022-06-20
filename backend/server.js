@@ -16,6 +16,8 @@ app.use(express.json());
 
 app.use(cookiePraser());
 
+app.set("trust proxy", 1);
+
 connectDB();
 
 app.use("/api/v1/user", userRouter);

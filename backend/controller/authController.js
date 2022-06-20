@@ -40,7 +40,6 @@ exports.createUser = catchAsync(async (req, res, next) => {
   res.cookie("jwt", refreshToken, {
     expires: new Date(Date.now() + 24 * 60 * 1000),
     httpOnly: true,
-    secure: true,
   });
   console.log("Success");
   res.status(201).json({
@@ -63,7 +62,7 @@ exports.signIn = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ username }).select("+password");
 
   if (!user) {
-    return next(new AppError("Cannot find user with this email", 404));
+    return next(new AppError("User not found", 404));
   }
 
   const validPassword = await user.isCorrectPassword(password, user.password);
@@ -83,7 +82,6 @@ exports.signIn = catchAsync(async (req, res, next) => {
     process.env.JWT_REFRESH_TOKEN_EXPIRES_IN
   );
 
-  console.log(user);
   let newRefreshTokenArray = cookies?.jwt
     ? user.refreshToken.filter((rt) => rt !== cookies.jwt)
     : user.refreshToken;
@@ -103,15 +101,14 @@ exports.signIn = catchAsync(async (req, res, next) => {
     res.clearCookie("jwt", { httpOnly: true });
   }
 
-  user.refreshToken = [...newRefreshTokenArray, refreshToken];
-
-  console.log(user);
+  user.refreshToken = [newRefreshTokenArray, refreshToken];
 
   const result = await user.save({ validateBeforeSave: false });
+  result.refreshToken = undefined;
 
   res.cookie("jwt", refreshToken, {
-    expires: new Date(Date.now() + 24 * 60 * 1000),
     httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000,
   });
 
   result.password = undefined;
