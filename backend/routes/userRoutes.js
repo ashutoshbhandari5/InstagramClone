@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post("/createUser", authController.createUser);
 router.post("/signin", authController.signIn);
+router.post("/googleLogin", authController.googleLogin);
 router.get("/getAllUsers", authMiddleware.protect, userController.getAllUsers);
 
 module.exports = router;

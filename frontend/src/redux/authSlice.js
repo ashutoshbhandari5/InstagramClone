@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { LogError } from "concurrently";
 import httpService from "../services/authServices";
 
 const initialState = {
