@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       required: [true, "Please enter your username"],
     },
-    googleEmail: {
+    email: {
       type: String,
       unique: [true, "This email address is already used"],
       sparse: true,
