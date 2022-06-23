@@ -1,8 +1,15 @@
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/userModel");
 const AppError = require("../utils/appError");
-const generateJwtToken = require("../utils/generateJwt");
+const {
+  generateJwtToken,
+  generateAccessAndRefreshTokens,
+} = require("../utils/generateJwt");
 const { OAuth2Client } = require("google-auth-library");
+const {
+  generateFromEmail,
+  generateUsername,
+} = require("unique-username-generator");
 
 exports.createUser = catchAsync(async (req, res, next) => {
   if (!req.body.username) {
@@ -125,6 +132,7 @@ exports.signIn = catchAsync(async (req, res, next) => {
 
 exports.googleLogin = catchAsync(async (req, res, next) => {
   const idToken = req.body.token;
+  const cookies = req.cookies;
   const client = new OAuth2Client(
     process.env.GOOGLE_CLINET_ID,
     process.env.GOOGLE_CLIENT_SECRET
@@ -137,6 +145,19 @@ exports.googleLogin = catchAsync(async (req, res, next) => {
 
   if (!userInfo) {
     next(new AppError("Authentication failed", 401));
+  }
+
+  console.log(userInfo);
+
+  //Since there will be some users generate refresh token and access token
+
+  const { email, sub } = userInfo;
+
+  const foundUser = await User.find({
+    $and: [{ email: { $eq: email } }, { githubId: { $eq: sub } }],
+  });
+
+  if (foundUser) {
   }
 
   res.status(200).json({ user: userInfo });

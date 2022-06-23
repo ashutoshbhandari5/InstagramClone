@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon backend/server",
-    "client": "npm start --prefix client",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \" npm run server \" \" npm run client \"",
     "data:import": "node backend/seeder"
   },
   "repository": {
@@ -31,6 +32,7 @@
     "mongoose": "^6.2.4",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
+    "unique-username-generator": "^1.1.1",
     "validator": "^13.7.0"
   }
 }
