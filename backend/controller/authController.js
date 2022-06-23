@@ -151,14 +151,88 @@ exports.googleLogin = catchAsync(async (req, res, next) => {
 
   //Since there will be some users generate refresh token and access token
 
-  const { email, sub } = userInfo;
+  const { email, sub, given_name, family_name } = userInfo;
 
   const foundUser = await User.find({
     $and: [{ email: { $eq: email } }, { githubId: { $eq: sub } }],
   });
 
   if (foundUser) {
+    const { accessToken, refreshToken } = generateAccessAndRefreshTokens(
+      { email: foundUser.email, username: foundUser.username },
+      { email: foundUser.email }
+    );
+
+    let newRefreshTokenArray = cookies?.jwt
+      ? foundUser.refreshToken((rt) => rt !== cookies.jwt)
+      : foundUser.refreshToken;
+    if (cookies?.jwt) {
+      const cRefreshToken = cookies.jwt;
+      const getUser = await User.find({ refreshToken: cRefreshToken });
+
+      if (!getUser) {
+        newRefreshTokenArray = [];
+        console.log("reuse of the token detected ===>>> Stolen token");
+      }
+      res.clearCookie("jwt", { httpOnly: true });
+    }
+
+    const refreshTokenArray = [newRefreshTokenArray, refreshToken];
+
+    foundUser.refreshToken = refreshTokenArray;
+
+    const result = await foundUser
+      .save({ validateBeforeSave: false })
+      .select("-password -refreshToken");
+
+    res.status(200).cookie("jwt", refreshToken, { httpOnly: true }).json({
+      status: "sccuess",
+      data: {
+        result,
+        accessToken,
+      },
+    });
   }
 
-  res.status(200).json({ user: userInfo });
+  const existingUserEmail = await User.find({ email });
+  if (existingUserEmail) {
+    next(
+      new AppError(
+        "This user email already exists, please login with another email",
+        403
+      )
+    );
+  }
+
+  const username = generateFromEmail(email, 2);
+  const { accessToken, refreshToken } = generateAccessAndRefreshTokens(
+    { email, username },
+    { email }
+  );
+
+  if (cookies) {
+    res.clearCookie("jwt", { httpOnly: true });
+  }
+
+  const newUser = await User.create(
+    {
+      name: `${given_name} ${family_name}`,
+      email,
+      githubId: sub,
+      username,
+      refreshToken: [refreshToken],
+    },
+    { validateBeforeSave: false }
+  );
+
+  res
+    .status(201)
+    .cookie("jwt", refreshToken, { httpOnly: true })
+    .json({
+      status: "success",
+      data: {
+        user: newUser,
+        accessToken,
+      },
+    });
 });
