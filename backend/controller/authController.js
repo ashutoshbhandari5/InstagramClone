@@ -2,6 +2,7 @@ const catchAsync = require("../utils/catchAsync");
 const User = require("../models/userModel");
 const AppError = require("../utils/appError");
 const generateJwtToken = require("../utils/generateJwt");
+const { OAuth2Client } = require("google-auth-library");
 
 exports.createUser = catchAsync(async (req, res, next) => {
   if (!req.body.username) {
@@ -120,4 +121,23 @@ exports.signIn = catchAsync(async (req, res, next) => {
       accessToken,
     },
   });
+});
+
+exports.googleLogin = catchAsync(async (req, res, next) => {
+  const idToken = req.body.token;
+  const client = new OAuth2Client(
+    process.env.GOOGLE_CLINET_ID,
+    process.env.GOOGLE_CLIENT_SECRET
+  );
+
+  const userInfo = await client.verifyIdToken({
+    idToken,
+    audience: process.env.GOOGLE_CLINET_ID,
+  });
+
+  if (!userInfo) {
+    next(new AppError("Authentication failed", 401));
+  }
+
+  res.status(200).json({ user: userInfo });
 });

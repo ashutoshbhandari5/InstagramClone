@@ -12,6 +12,7 @@ import GooglePlayImg from "../../../assets/GooglePlay.png";
 import AppStoreImg from "../../../assets/AppStore.png";
 import { gapi } from "gapi-script";
 import GoogleLoginButton from "../../Common/Button/GoogleLoginButton";
+import axios from "axios";
 
 const LoginCard = () => {
   const GClientID = process.env.REACT_APP_GOOGLE_CLINET_ID;
@@ -47,9 +48,11 @@ const LoginCard = () => {
     const user = { username, password };
     dispatch(login(user));
   };
-  const handleGoogleLogin = (response) => {
+  const handleGoogleLogin = async (response) => {
     console.log("Success");
-    console.log(response);
+    const token = response.tokenId;
+    const { data } = await axios.post("/api/v1/user/googleLogin", { token });
+    console.log(data);
   };
   const handleGoogleLoginFailure = (response) => {
     console.log("Failed");

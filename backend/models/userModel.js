@@ -40,6 +40,7 @@ const userSchema = new mongoose.Schema(
     },
     passwordChangedAt: Date,
     refreshToken: [String],
+    googleId: Number,
   },
   {
     toJSON: { virtuals: true },
