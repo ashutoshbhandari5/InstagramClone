@@ -33,6 +33,7 @@ exports.createUser = catchAsync(async (req, res, next) => {
     name: req.body.name,
     username: req.body.username,
     password: req.body.password,
+    email: req.body.email,
     confirmPassword: req.body.confirmPassword,
     refreshToken: [refreshToken],
   });
@@ -147,17 +148,13 @@ exports.googleLogin = catchAsync(async (req, res, next) => {
     next(new AppError("Authentication failed", 401));
   }
 
-  console.log(userInfo);
-
   //Since there will be some users generate refresh token and access token
 
-  const { email, sub, given_name, family_name } = userInfo;
-
-  const foundUser = await User.find({
-    $and: [{ email: { $eq: email } }, { githubId: { $eq: sub } }],
-  });
+  const { email, sub, given_name, family_name } = userInfo.payload;
+  const foundUser = await User.findOne({ googleId: sub });
 
   if (foundUser) {
+    console.log("User found");
     const { accessToken, refreshToken } = generateAccessAndRefreshTokens(
       { email: foundUser.email, username: foundUser.username },
       { email: foundUser.email }
@@ -194,12 +191,14 @@ exports.googleLogin = catchAsync(async (req, res, next) => {
     });
   }
 
-  const existingUserEmail = await User.find({ email });
+  console.log(email);
+  const existingUserEmail = await User.findOne({ email });
   if (existingUserEmail) {
+    console.log("User's email already exists");
     next(
       new AppError(
         "This user email already exists, please login with another email",
-        403
+        400
       )
     );
   }
@@ -214,16 +213,19 @@ exports.googleLogin = catchAsync(async (req, res, next) => {
     res.clearCookie("jwt", { httpOnly: true });
   }
 
-  const newUser = await User.create(
-    {
-      name: `${given_name} ${family_name}`,
-      email,
-      githubId: sub,
-      username,
-      refreshToken: [refreshToken],
-    },
-    { validateBeforeSave: false }
-  );
+  const createUser = new User({
+    name: `${given_name} ${family_name}`,
+    email,
+    googleId: sub,
+    username,
+    refreshToken: [refreshToken],
+  });
+
+  const newUser = await createUser.save({ validateBeforeSave: false });
+
+  newUser.refreshToken = undefined;
+  newUser.googleId = undefined;
+  newUser.password = undefined;
 
   res
     .status(201)
