@@ -40,6 +40,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   // if (isNotValidToken) {
   //   return next("Please login again", 401);
   // }
+  console.log("hit middleware");
   req.user = user;
   next();
 });

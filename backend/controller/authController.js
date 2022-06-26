@@ -6,10 +6,7 @@ const {
   generateAccessAndRefreshTokens,
 } = require("../utils/generateJwt");
 const { OAuth2Client } = require("google-auth-library");
-const {
-  generateFromEmail,
-  generateUsername,
-} = require("unique-username-generator");
+const { generateFromEmail } = require("unique-username-generator");
 
 exports.createUser = catchAsync(async (req, res, next) => {
   if (!req.body.username) {
@@ -110,7 +107,7 @@ exports.signIn = catchAsync(async (req, res, next) => {
     res.clearCookie("jwt", { httpOnly: true });
   }
 
-  user.refreshToken = [newRefreshTokenArray, refreshToken];
+  user.refreshToken = [...newRefreshTokenArray, refreshToken];
 
   const result = await user.save({ validateBeforeSave: false });
   result.refreshToken = undefined;
@@ -161,7 +158,7 @@ exports.googleLogin = catchAsync(async (req, res, next) => {
     );
 
     let newRefreshTokenArray = cookies?.jwt
-      ? foundUser.refreshToken((rt) => rt !== cookies.jwt)
+      ? foundUser.refreshToken.filter((rt) => rt !== cookies.jwt)
       : foundUser.refreshToken;
     if (cookies?.jwt) {
       const cRefreshToken = cookies.jwt;
@@ -174,21 +171,29 @@ exports.googleLogin = catchAsync(async (req, res, next) => {
       res.clearCookie("jwt", { httpOnly: true });
     }
 
-    const refreshTokenArray = [newRefreshTokenArray, refreshToken];
+    const refreshTokenArray = [...newRefreshTokenArray, refreshToken];
 
     foundUser.refreshToken = refreshTokenArray;
 
-    const result = await foundUser
-      .save({ validateBeforeSave: false })
-      .select("-password -refreshToken");
+    const result = await foundUser.save({ validateBeforeSave: false });
+    result.password = undefined;
+    result.refreshToken = undefined;
+    result.__v = undefined;
 
-    res.status(200).cookie("jwt", refreshToken, { httpOnly: true }).json({
-      status: "sccuess",
-      data: {
-        result,
-        accessToken,
-      },
-    });
+    console.log(accessToken);
+    console.log("======================");
+    console.log(refreshToken);
+
+    return res
+      .status(200)
+      .cookie("jwt", refreshToken, { httpOnly: true })
+      .json({
+        status: "sccuess",
+        data: {
+          result,
+          accessToken,
+        },
+      });
   }
 
   console.log(email);
@@ -203,7 +208,7 @@ exports.googleLogin = catchAsync(async (req, res, next) => {
     );
   }
 
-  const username = generateFromEmail(email, 2);
+  const username = generateFromEmail(email, 1);
   const { accessToken, refreshToken } = generateAccessAndRefreshTokens(
     { email, username },
     { email }
@@ -237,4 +242,36 @@ exports.googleLogin = catchAsync(async (req, res, next) => {
         accessToken,
       },
     });
+});
+
+exports.logout = catchAsync(async (req, res, next) => {
+  const refreshToken = req.cookies?.jwt;
+
+  if (!refreshToken) {
+    return next(new AppError("Refresh Token not available", 403));
+  }
+
+  console.log(refreshToken);
+  const decodedRefreshToken = await jwt.verify(
+    refreshToken,
+    process.env.JWT_REFRESH_SECRET_KEY
+  );
+
+  if (!decodedRefreshToken) {
+    return next(new AppError("Refresh Token Expired", 403));
+  }
+
+  const foundUser = await User.find({ refreshToken });
+
+  if (!foundUser) {
+    return res.clearCookie("jwt", { httpOnly: "true" }).status(204);
+  }
+
+  const newRefreshTokenArray = foundUser.refreshToken.filter(
+    (rt) => rt !== refreshToken
+  );
+
+  foundUser.refreshToken = newRefreshTokenArray;
+  await foundUser.save({ validateBeforeSave: false });
+  res.status(200).clearCookie("jwt", { httpOnly: true });
 });
