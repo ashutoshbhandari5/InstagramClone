@@ -1,5 +1,5 @@
 import React from "react";
-import googelLogo from "../../../assets/google.png";
+import googelLogo from "../../assets/google.png";
 
 const Button = ({ disabled, usedFor, onClick, type, text }) => {
   if (usedFor === "googleLogin") {

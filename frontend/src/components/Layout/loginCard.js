@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../../redux/authSlice";
-import useForm from "../../../hooks/useForm";
-import Logo from "../../../assets/logo.png";
-import BorderLine from "../../Common/BorderLine/BorderLine";
-import Button from "../../Common/Button/Button";
-import Input from "../../Common/Input/Input";
-import LinkTo from "../../Common/LinkTo/LinkTo";
-import URL from "../../Common/URL/URL";
-import GooglePlayImg from "../../../assets/GooglePlay.png";
-import AppStoreImg from "../../../assets/AppStore.png";
+import { login } from "../../redux/authSlice";
+import useForm from "../../hooks/useForm";
+import Logo from "../../assets/logo.png";
+import BorderLine from "../Common/BorderLine";
+import Button from "../Common/Button";
+import Input from "../Common/Input";
+import LinkTo from "../Common/LinkTo";
+import URL from "../Common/URL";
+import GooglePlayImg from "../../assets/GooglePlay.png";
+import AppStoreImg from "../../assets/AppStore.png";
+import GoogleLoginButton from "../Common/GoogleLoginButton";
 import { gapi } from "gapi-script";
-import GoogleLoginButton from "../../Common/Button/GoogleLoginButton";
 import axios from "axios";
 
 const LoginCard = () => {
@@ -54,10 +54,7 @@ const LoginCard = () => {
     const { data } = await axios.post("/api/v1/user/googleLogin", { token });
     console.log(data);
   };
-  const handleGoogleLoginFailure = (response) => {
-    console.log("Failed");
-    console.log(response);
-  };
+  const handleGoogleLoginFailure = (response) => {};
 
   return (
     <div>
