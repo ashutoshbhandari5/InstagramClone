@@ -1,8 +1,8 @@
 import React from "react";
-import ImageShowCase from "../../components/Layout/ImageShowCase/ImageShowCase";
-import LoginCard from "../../components/Layout/LoginCard/loginCard";
-import Tags from "../../components/Layout/Extras/Tags";
-import Footer from "../../components/Common/Footer/Footer";
+import ImageShowCase from "../components/Layout/ImageShowCase";
+import LoginCard from "../components/Layout/loginCard";
+import Tags from "../components/Layout/Tags";
+import Footer from "../components/Common/Footer";
 
 const LoginPage = () => {
   return (

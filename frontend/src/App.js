@@ -1,10 +1,12 @@
-import LoginPage from "./pages/LoginPage/loginPage";
+import LoginPage from "./pages/loginPage";
+import Homepage from "./pages/Homepage";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route exaxt path="/" element={<Homepage />} />
     </Routes>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
-import childImage from "../../../assets/childImage.png";
-import parentImage from "../../../assets/parentImage.png";
+import childImage from "../../assets/childImage.png";
+import parentImage from "../../assets/parentImage.png";
 
 const ImageShowCase = () => {
   return (
