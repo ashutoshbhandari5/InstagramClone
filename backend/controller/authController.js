@@ -15,16 +15,9 @@ exports.createUser = catchAsync(async (req, res, next) => {
 
   const username = { username: req.body.username };
 
-  const accessToken = generateJwtToken(
-    username,
-    process.env.JWT_ACCESS_SECRET_KEY,
-    process.env.JWT_ACCESS_TOKEN_EXPIRES_IN
-  );
-
-  const refreshToken = generateJwtToken(
-    username,
-    process.env.JWT_REFRESH_SECRET_KEY,
-    process.env.JWT_REFRESH_TOKEN_EXPIRES_IN
+  const { accessToken, refreshToken } = generateAccessAndRefreshTokens(
+    { username },
+    { username }
   );
   const user = await User.create({
     name: req.body.name,
@@ -58,14 +51,25 @@ exports.createUser = catchAsync(async (req, res, next) => {
 });
 
 exports.signIn = catchAsync(async (req, res, next) => {
-  const { username, password } = req.body;
+  const { username: emailOrUsername, password } = req.body;
   const cookies = req.cookies;
 
-  if (!username || !password) {
+  if (!emailOrUsername || !password) {
     return next(new AppError("Please enter your username and password", 401));
   }
 
-  const user = await User.findOne({ username }).select("+password");
+  const isEmail = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}").test(
+    emailOrUsername
+  );
+
+  let user;
+  if (isEmail) {
+    user = await User.findOne({ email: emailOrUsername }).select("+password");
+  } else {
+    user = await User.findOne({ username: emailOrUsername }).select(
+      "+password"
+    );
+  }
 
   if (!user) {
     return next(new AppError("User not found", 404));
@@ -76,16 +80,9 @@ exports.signIn = catchAsync(async (req, res, next) => {
   if (!validPassword) {
     return next(new AppError("Please enter correct password", 401));
   }
-  const accessToken = generateJwtToken(
-    username,
-    process.env.JWT_ACCESS_SECRET_KEY,
-    process.env.JWT_ACCESS_TOKEN_EXPIRES_IN
-  );
-
-  const refreshToken = generateJwtToken(
-    username,
-    process.env.JWT_REFRESH_SECRET_KEY,
-    process.env.JWT_REFRESH_TOKEN_EXPIRES_IN
+  const { accessToken, refreshToken } = generateAccessAndRefreshTokens(
+    { username: emailOrUsername },
+    { username: emailOrUsername }
   );
 
   let newRefreshTokenArray = cookies?.jwt

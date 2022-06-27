@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const getUser = (userInfo) => {
-  console.log(userInfo);
-  const response = axios.post("api/v1/user/signin", userInfo);
+const getUser = async (userInfo) => {
+  const response = await axios.post("api/v1/user/signin", userInfo);
 
+  console.log(response.data);
   if (response) {
-    localStorage.setItem("userToken", response.token);
-    localStorage.setItem("user", response.data);
+    localStorage.setItem("accessToken", JSON.stringify(response.token));
+    localStorage.setItem("user", JSON.stringify(response.data));
   }
 
   return response.data;
