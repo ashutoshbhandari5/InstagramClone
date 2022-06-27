@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import authSlice, { login } from "../../redux/authSlice";
 import useForm from "../../hooks/useForm";
 import Logo from "../../assets/logo.png";
 import BorderLine from "../Common/BorderLine";
@@ -13,36 +13,19 @@ import AppStoreImg from "../../assets/AppStore.png";
 import GoogleLoginButton from "../Common/GoogleLoginButton";
 import { gapi } from "gapi-script";
 import axios from "axios";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 
 const LoginCard = () => {
   const GClientID = process.env.REACT_APP_GOOGLE_CLINET_ID;
+  const location = useLocation();
+  const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
 
-  useEffect(() => {
-    const start = () => {
-      gapi.client.init({
-        clientId: GClientID,
-        scope: "",
-      });
-    };
-
-    gapi.load("client:auth2", start);
-  });
   const { values, handleChange, disableLoginButton } = useForm();
   const { username, password } = values;
   const dispatch = useDispatch();
 
-  // const { user, isLoading, isError, isSuccess, message } = useSelector(
-  //   (state) => state.auth
-  // );
-  // if (isLoading) {
-  //   console.log(isLoading);
-  // }
-  // if (isSuccess) {
-  //   console.log(isSuccess);
-  // }
-  // if (user) {
-  //   console.log(user);
-  // }
   const handleSubmit = (e) => {
     e.preventDefault();
     const user = { username, password };
@@ -55,6 +38,17 @@ const LoginCard = () => {
     console.log(data);
   };
   const handleGoogleLoginFailure = (response) => {};
+
+  useEffect(() => {
+    const start = () => {
+      gapi.client.init({
+        clientId: GClientID,
+        scope: "",
+      });
+    };
+
+    gapi.load("client:auth2", start);
+  }, [GClientID]);
 
   return (
     <div>
