@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../../redux/authSlice";
 import useForm from "../../hooks/useForm";
 import Logo from "../../assets/logo.png";
@@ -27,7 +27,6 @@ const LoginCard = ({ loading }) => {
     dispatch(login(user));
   };
   const handleGoogleLogin = async (response) => {
-    console.log("Success");
     const token = response.tokenId;
     const { data } = await axios.post("/api/v1/user/googleLogin", { token });
     console.log(data);
