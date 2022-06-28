@@ -10,7 +10,6 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
   const { user, loading } = auth;
-  console.log(user, loading);
 
   useEffect(() => {
     if (user) {
