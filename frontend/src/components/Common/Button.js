@@ -1,7 +1,7 @@
 import React from "react";
 import googelLogo from "../../assets/google.png";
-
-const Button = ({ disabled, usedFor, onClick, type, text }) => {
+import Loading from "./Loading";
+const Button = ({ disabled, usedFor, onClick, type, text, loading }) => {
   if (usedFor === "googleLogin") {
     return (
       <div onClick={onClick} className="google-login">
@@ -13,7 +13,13 @@ const Button = ({ disabled, usedFor, onClick, type, text }) => {
   return (
     <div className="button">
       <button type={type} disabled={disabled}>
-        {text}
+        {loading ? (
+          <span>
+            <Loading />
+          </span>
+        ) : (
+          text
+        )}
       </button>
     </div>
   );
