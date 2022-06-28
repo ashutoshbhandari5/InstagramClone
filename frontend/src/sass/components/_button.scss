@@ -28,6 +28,11 @@
     text-align: center;
     padding: 6px;
     border-radius: 3px;
+
+    span {
+      position: relative;
+      left: 46%;
+    }
   }
 
   & > button:disabled {

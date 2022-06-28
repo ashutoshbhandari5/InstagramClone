@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import authSlice, { login } from "../../redux/authSlice";
+import { login } from "../../redux/authSlice";
 import useForm from "../../hooks/useForm";
 import Logo from "../../assets/logo.png";
 import BorderLine from "../Common/BorderLine";
@@ -13,14 +13,9 @@ import AppStoreImg from "../../assets/AppStore.png";
 import GoogleLoginButton from "../Common/GoogleLoginButton";
 import { gapi } from "gapi-script";
 import axios from "axios";
-import { useNavigate, useLocation, Navigate } from "react-router-dom";
 
-const LoginCard = () => {
+const LoginCard = ({ loading }) => {
   const GClientID = process.env.REACT_APP_GOOGLE_CLINET_ID;
-  const location = useLocation();
-  const auth = useSelector((state) => state.auth);
-  const navigate = useNavigate();
-  const from = location.state?.from?.pathname || "/";
 
   const { values, handleChange, disableLoginButton } = useForm();
   const { username, password } = values;
@@ -75,6 +70,7 @@ const LoginCard = () => {
             disabled={disableLoginButton()}
             type={"submit"}
             text={"Log In"}
+            loading={loading}
           />
           <div className="divider">
             <BorderLine />

@@ -6,9 +6,9 @@ import httpService from "../services/authServices";
 //   : null;
 const initialState = {
   user: null,
-  isSccuess: false,
-  isLoading: false,
-  isError: false,
+  success: false,
+  loading: false,
+  error: false,
   message: "",
 };
 
@@ -32,30 +32,30 @@ export const loginSlice = createSlice({
 
   reducers: {
     reset: (state) => {
-      state.isError = false;
-      state.isLoading = false;
+      state.error = false;
+      state.loading = false;
       state.message = "";
-      state.isSccuess = false;
+      state.success = false;
     },
   },
 
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state, action) => {
-      state.isLoading = true;
+      state.loading = true;
     });
 
     builder.addCase(login.fulfilled, (state, action) => {
       state.user = action.payload;
-      state.isLoading = false;
-      state.isSccuess = true;
-      state.isError = false;
+      state.loading = false;
+      state.success = true;
+      state.error = false;
     });
 
     builder.addCase(login.rejected, (state, action) => {
       state.user = null;
-      state.isLoading = false;
+      state.loading = false;
       state.message = action.payload;
-      state.isError = true;
+      state.error = true;
     });
   },
 });
