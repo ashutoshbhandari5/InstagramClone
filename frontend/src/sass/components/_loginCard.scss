@@ -4,6 +4,7 @@
   @include mainBorder();
   margin-top: 0.6rem;
   background-color: $white-color;
+  padding: 0 2.2rem;
   @include flexCenter() {
     flex-direction: column;
     justify-content: flex-start;
@@ -12,24 +13,12 @@
   .heading-logo {
     &-image {
       margin-top: 52px;
-      width: 10rem;
     }
   }
 
   .login-form {
     margin-top: 1.4rem;
     width: 100%;
-
-    .divider {
-      @include flexCenter();
-      margin: 10px 40px 18px;
-
-      & > span {
-        color: $dark-gray-color;
-        font-size: 12px;
-        margin: 0 15px;
-      }
-    }
 
     .forget-password {
       margin: 10px 60px 18px;

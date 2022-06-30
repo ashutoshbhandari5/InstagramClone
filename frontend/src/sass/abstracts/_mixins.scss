@@ -12,7 +12,7 @@
 }
 
 @mixin mainBorder() {
-  border: 1px solid $light-gray-color;
+  border: 1px solid lightgray;
 }
 
 @mixin respond($breakpoint) {

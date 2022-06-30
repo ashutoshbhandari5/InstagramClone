@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { login } from "../../redux/authSlice";
 import useForm from "../../hooks/useForm";
 import Logo from "../../assets/logo.png";
-import BorderLine from "../Common/BorderLine";
 import Button from "../Common/Button";
 import Input from "../Common/Input";
 import LinkTo from "../Common/LinkTo";
@@ -13,6 +12,7 @@ import AppStoreImg from "../../assets/AppStore.png";
 import GoogleLoginButton from "../Common/GoogleLoginButton";
 import { gapi } from "gapi-script";
 import axios from "axios";
+import Divider from "../Common/Divider";
 
 const LoginCard = ({ loading }) => {
   const GClientID = process.env.REACT_APP_GOOGLE_CLINET_ID;
@@ -26,6 +26,9 @@ const LoginCard = ({ loading }) => {
     const user = { username, password };
     dispatch(login(user));
   };
+  //TODO
+  //Add the following request to redux
+  //Add user to localstorage
   const handleGoogleLogin = async (response) => {
     const token = response.tokenId;
     const { data } = await axios.post("/api/v1/user/googleLogin", { token });
@@ -65,17 +68,14 @@ const LoginCard = ({ loading }) => {
             value={password}
             onInputChange={handleChange}
           />
+
           <Button
             disabled={disableLoginButton()}
             type={"submit"}
             text={"Log In"}
             loading={loading}
           />
-          <div className="divider">
-            <BorderLine />
-            <span className="uppercase">or</span>
-            <BorderLine />
-          </div>
+          <Divider />
           <GoogleLoginButton
             onSuccess={handleGoogleLogin}
             onFailure={handleGoogleLoginFailure}

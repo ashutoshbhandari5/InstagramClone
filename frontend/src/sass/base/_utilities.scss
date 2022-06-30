@@ -1,3 +1,6 @@
+.heading-logo-image {
+  width: 10rem;
+}
 .md-lg {
   margin-top: 2rem !important;
 }
@@ -46,6 +49,9 @@
 .text-size-large {
   font-size: 16px;
 }
+.text-size-max {
+  font-size: 18px;
+}
 .text-center {
   text-align: center;
 }
@@ -63,4 +69,7 @@
 }
 .color-dark-gray {
   color: $dark-gray-color;
+}
+.color-light-gray {
+  color: $light-gray-color;
 }
