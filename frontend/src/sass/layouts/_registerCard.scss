@@ -1,0 +1,11 @@
+.register-card {
+  max-width: 350px;
+  background-color: $white-color;
+  text-align: center;
+  @include mainBorder();
+  padding: 2rem 2rem;
+
+  & > img {
+    margin-top: 1rem;
+  }
+}
