@@ -6,13 +6,11 @@ import Logo from "../../assets/logo.png";
 import Button from "../Common/Button";
 import Input from "../Common/Input";
 import LinkTo from "../Common/LinkTo";
-import URL from "../Common/URL";
-import GooglePlayImg from "../../assets/GooglePlay.png";
-import AppStoreImg from "../../assets/AppStore.png";
 import GoogleLoginButton from "../Common/GoogleLoginButton";
 import { gapi } from "gapi-script";
 import axios from "axios";
 import Divider from "../Common/Divider";
+import Store from "../Common/Store";
 
 const LoginCard = ({ loading }) => {
   const GClientID = process.env.REACT_APP_GOOGLE_CLINET_ID;
@@ -99,16 +97,7 @@ const LoginCard = ({ loading }) => {
           </LinkTo>
         </div>
       </div>
-      <h3 className="text-size-medium font-medium text-center mtb-lg">
-        Get the app.
-      </h3>
-      <div className="download-link">
-        <URL img={AppStoreImg} url={process.env.REACT_APP_APPLE_STORE_IMAGE} />
-        <URL
-          img={GooglePlayImg}
-          url={process.env.REACT_APP_GOOGLE_PLAY_STORE_IMAGE}
-        />
-      </div>
+      <Store />
     </div>
   );
 };
