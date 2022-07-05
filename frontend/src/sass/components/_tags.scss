@@ -14,3 +14,17 @@
     color: #8e8e8e;
   }
 }
+
+.flex-tags {
+  max-width: 850px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  & > h6 {
+    font-size: 13px;
+    color: #8e8e8e;
+    font-weight: 500;
+  }
+}

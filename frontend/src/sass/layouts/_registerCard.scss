@@ -9,3 +9,16 @@
     margin-top: 1rem;
   }
 }
+
+.register-card-login {
+  padding: 1.2rem 2rem;
+  background-color: $white-color;
+  font-size: 14px;
+  text-align: center;
+  @include mainBorder();
+  margin-top: 1rem;
+  & > p {
+    display: inline;
+    color: #262626;
+  }
+}

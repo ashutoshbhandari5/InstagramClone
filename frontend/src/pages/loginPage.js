@@ -23,10 +23,8 @@ const LoginPage = () => {
           <ImageShowCase />
           <LoginCard loading={loading} />
         </article>
-        <Tags />
-        <footer>
-          <Footer />
-        </footer>
+        <Tags page={"login"} />
+        <Footer />
       </main>
     </section>
   );

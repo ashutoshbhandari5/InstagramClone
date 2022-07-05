@@ -6,5 +6,15 @@
 
   .register {
     margin: 1.2rem 0;
+
+    .app-info {
+      margin-top: 1rem;
+      text-align: center;
+
+      & > p {
+        font-size: 14px;
+        color: #262626;
+      }
+    }
   }
 }
